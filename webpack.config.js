@@ -24,6 +24,14 @@ const getEntries = () => {
 }
 // console.log(getEntries());
 
+let url ='';
+if(DEV === 'dev') {
+  url='http://localhost:3000';
+} else {
+  url='http://www.baidu.com';
+}
+console.log(url);
+
 module.exports = {
   // mode: 'production',
   // mode: 'development',
@@ -92,6 +100,15 @@ module.exports = {
         }
       } 
     }*/
+  },
+  resolve:{
+    //解析第三方包
+    modules:[path.resolve('node_modules')],
+    extensions:['.js','.css','.json','.vue'],
+    alias:{//别名 简化书写目录
+    },
+    // mainFiles:['style','main']
+    // mainFiles:[]//默认入口文件 index.js
   },
   module: {//模块
     rules: [//规则
@@ -170,7 +187,12 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: 'main.css',
+    }),
+
+    new webpack.DefinePlugin({
+      DEV:JSON.stringify('dev')
     })
+
     /* new webpack.ProvidePlugin({
       jQuery: "jquery", $: "jquery"
     }), */
