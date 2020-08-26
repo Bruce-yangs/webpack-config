@@ -7,6 +7,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
+const PORT = 8081;
+
 /**
  * 通过约定，降低编码复杂度
  * 每新增一个入口，即在src/pages目录下新增一个文件夹，以页面名称命名，内置一个index.js作为入口文件
@@ -24,13 +27,13 @@ const getEntries = () => {
 }
 // console.log(getEntries());
 
-let url ='';
+/* let url ='';
 if(DEV === 'dev') {
   url='http://localhost:3000';
 } else {
   url='http://www.baidu.com';
 }
-console.log(url);
+console.log(url); */
 
 module.exports = {
   // mode: 'production',
@@ -90,6 +93,8 @@ module.exports = {
       ],
   },
   devServer:{
+    open:true,
+    port:PORT
     //也可以服务端配置中间件
     /* proxy:{
       // '/api':'http://localhost:3000' //配置代理
@@ -101,6 +106,7 @@ module.exports = {
       } 
     }*/
   },
+  //noParse:/jquery/,//不去解析 多个可以 /jquery|lodash/
   resolve:{
     //解析第三方包
     modules:[path.resolve('node_modules')],
@@ -134,18 +140,19 @@ module.exports = {
       },
       {
         test:/\.js$/,
-        exclude: /node_modules/,
-        include:path.resolve(__dirname,'src'),
+        exclude: /node_modules/, //排除 node_modules
+        include:path.resolve(__dirname,'src'),// 只针对某个目录去解析
         use:{
           loader:'babel-loader',
-          /* options:{
+          options:{
             presets:[
-              '@babel/preset-env'
-            ],
+              '@babel/preset-react'
+              // '@babel/preset-env'
+            ]/* ,
             plugins:[
               '@babel/plugin-proposal-class-properties','@babel/plugin-transform-runtime'
-            ]
-          } */
+            ] */
+          }
         }
       },
       {//css-loader 解析@import语法   //style-loader 把css 插入到head标签中 loader顺序从右向左执行
@@ -189,9 +196,12 @@ module.exports = {
       filename: 'main.css',
     }),
 
-    new webpack.DefinePlugin({
+    //忽略某些依赖文件  忽略不需要的语言种类，单独在需要转换的文件中加入 语种 如 important 'moment/locale/zhe-cn';
+    // new webpack.IgnorePlugin(/\.\/locale/,/moment/), 
+
+    /* new webpack.DefinePlugin({
       DEV:JSON.stringify('dev')
-    })
+    }) */
 
     /* new webpack.ProvidePlugin({
       jQuery: "jquery", $: "jquery"

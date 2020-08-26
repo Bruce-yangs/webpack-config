@@ -1,5 +1,19 @@
-import img from './img/123.jpg';
+ import img from './img/123.jpg';
 require('./index.css') ;
+/*import dayjs from 'dayjs';
+console.log(dayjs('2018-08-08'));
+console.log(dayjs().format('YYYY-MM-DD HH:mm:ss'));
+console.log(dayjs().endOf('month').add(1, 'day').set('year', 2018)
+.format('YYYY-MM-DD HH:mm:ss')); */
+
+
+import React from 'react';
+import {render} from 'react-dom';
+
+render(<h1>jsx</h1>,window.rootaa);
+
+
+
 // import "@babel/polyfill";
 // var hdasd={
 //     like:12
@@ -26,10 +40,12 @@ let a = new A();
 console.log(a.a);
 '11'.includes('1'); */
 
-let xhr = new XMLHttpRequest();
+
+//请求数据
+/* let xhr = new XMLHttpRequest();
 xhr.open('GET','/user',true);
 // xhr.open('GET','/api/user',true);
 xhr.onload = function(){
     console.log(xhr.response);
 }
-xhr.send();
+xhr.send(); */
