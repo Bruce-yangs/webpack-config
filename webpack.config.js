@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
+const manifest = require('./dist/manifest.json');
 const PORT = 8081;
 
 /**
@@ -94,7 +95,8 @@ module.exports = {
   },
   devServer:{
     open:true,
-    port:PORT
+    port:PORT,
+    contentBase:'./dist'
     //也可以服务端配置中间件
     /* proxy:{
       // '/api':'http://localhost:3000' //配置代理
@@ -176,13 +178,20 @@ module.exports = {
   },
   plugins: [
     // new webpack.ProgressPlugin(),
-    new CleanWebpackPlugin(),
+
+    // new CleanWebpackPlugin(),
+
     /* new HtmlWebpackPlugin({ filename: 'pageOne.html',template: './src/pageOne/index.html',
     chunks: ['pageOne']}),
     new HtmlWebpackPlugin({filename: 'pageTwo.html',template: './src/pageTwo/index.html',
     chunks: ['pageTwo']}),
     new HtmlWebpackPlugin({filename: 'pageThree.html',template: './src/pageThree/index.html',
     chunks: ['pageThree','pageOne']}), */
+
+    new webpack.DllReferencePlugin({
+      manifest
+      // mainfest:path.resolve(__dirname,'./dist','mainfest.json')
+    }),
      new HtmlWebpackPlugin({
        version: 'v1',
       filename: 'index.html', template: './src/index.html',
@@ -195,6 +204,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'main.css',
     }),
+    
 
     //忽略某些依赖文件  忽略不需要的语言种类，单独在需要转换的文件中加入 语种 如 important 'moment/locale/zhe-cn';
     // new webpack.IgnorePlugin(/\.\/locale/,/moment/), 

@@ -1,10 +1,11 @@
 {
-  "name": "webpackDemo",
+  "name": "webpack-config",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --color",
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -42,6 +43,8 @@
     "defaults"
   ],
   "dependencies": {
-    "dayjs": "^1.8.34"
+    "dayjs": "^1.8.34",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   }
 }
