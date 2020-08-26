@@ -12,6 +12,7 @@ module.exports = {
         library:'_dll_[name]',
         // libraryTarget:'var' var commonjs this
     },
+
     plugins:[
         new webpack.DllPlugin({//动态链接库
             name:'_dll_[name]',
