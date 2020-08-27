@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "webpack-dev-server --color",
     "build": "webpack",
+    "build:dll": "webpack --config webpack.dll.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -45,6 +46,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "dayjs": "^1.8.34",
+    "happypack": "^5.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }

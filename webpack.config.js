@@ -1,14 +1,15 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // 通过 npm 安装
 const webpack = require('webpack'); // 
 const path = require('path');
-var glob = require('glob')
+// var glob = require('glob')
 var fs = require('fs')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const HappyPack = require('happypack');
 
-const manifest = require('./dist/manifest.json');
+// const manifest = require('./dist/manifest.json');
 const PORT = 8081;
 
 /**
@@ -37,16 +38,16 @@ if(DEV === 'dev') {
 console.log(url); */
 
 module.exports = {
-  // mode: 'production',
+  mode: 'production',
   // mode: 'development',
-  devServer: {
-    port: 8088,
-    compress: true,
-    // progress: true,
-    contentBase: "./dist",
-    // contentBase: path.join(__dirname, "dist"),
-    open: true
-  },
+  // devServer: {
+  //   port: 8088,
+  //   compress: true,
+  //   // progress: true,
+  //   contentBase: "./dist",
+  //   // contentBase: path.join(__dirname, "dist"),
+  //   open: true
+  // },
   entry: ['./src/index.js'] /* {
      pageOne: './src/pageOne/index.js',
     pageTwo: './src/pageTwo/index.js',
@@ -64,12 +65,13 @@ module.exports = {
     filename: '[name]-[contenthash:8].js',
     // publicPath:'http://www.baidu.com/'//配置cdn 这是全部都加上 html css js 也可以单独配置 需要的cdn如只配置css
   },
-  watch:true,
+  /* watch:true,
   watchOptions:{
     poll:1000,//监控的选项
     // aggreatement: 1000//防抖 如一直输入代码
     ignored:/node_modules/ //忽略node_modules监控
-  },
+  }, */
+
   //'source-map'会单独生成一个sourcemap文件
   //'eval-source-map'不会生成单独的sourcemap文件
   //'cheap-module-source-map'产生后可以保留起来
@@ -144,18 +146,19 @@ module.exports = {
         test:/\.js$/,
         exclude: /node_modules/, //排除 node_modules
         include:path.resolve(__dirname,'src'),// 只针对某个目录去解析
+        // use:'happypack/loader?id=js'
         use:{
           loader:'babel-loader',
           options:{
             presets:[
-              '@babel/preset-react'
-              // '@babel/preset-env'
+              '@babel/preset-react',
+              '@babel/preset-env'
             ]/* ,
             plugins:[
               '@babel/plugin-proposal-class-properties','@babel/plugin-transform-runtime'
             ] */
           }
-        }
+        } 
       },
       {//css-loader 解析@import语法   //style-loader 把css 插入到head标签中 loader顺序从右向左执行
         test: /\.css$/,use:[MiniCssExtractPlugin.loader,'css-loader','postcss-loader']
@@ -179,7 +182,7 @@ module.exports = {
   plugins: [
     // new webpack.ProgressPlugin(),
 
-    // new CleanWebpackPlugin(),
+    new CleanWebpackPlugin(),
 
     /* new HtmlWebpackPlugin({ filename: 'pageOne.html',template: './src/pageOne/index.html',
     chunks: ['pageOne']}),
@@ -188,10 +191,31 @@ module.exports = {
     new HtmlWebpackPlugin({filename: 'pageThree.html',template: './src/pageThree/index.html',
     chunks: ['pageThree','pageOne']}), */
 
-    new webpack.DllReferencePlugin({
+    /****   使用HappyPack实例化    *****/
+    /* new HappyPack({
+      // 用唯一的标识符id来代表当前的HappyPack 处理一类特定的文件
+      id: 'js',
+      // 如何处理.js文件，用法和Loader配置是一样的
+      use: [{
+          loader:'babel-loader',
+          options:{
+            presets:[
+              '@babel/preset-env',
+              '@babel/preset-react'
+            ]
+          }
+        } ]
+    }), */
+    // 处理css文件
+    /* new HappyPack({
+      id: 'css-pack',
+      loaders: ['css-loader']
+    }) */
+
+    /* new webpack.DllReferencePlugin({
       manifest
-      // mainfest:path.resolve(__dirname,'./dist','mainfest.json')
-    }),
+      // mainfest:path.resolve(__dirname,'dist','manifest.json')
+    }), */
      new HtmlWebpackPlugin({
        version: 'v1',
       filename: 'index.html', template: './src/index.html',

@@ -1,4 +1,5 @@
  import img from './img/123.jpg';
+ import calc from './test';
 require('./index.css') ;
 /*import dayjs from 'dayjs';
 console.log(dayjs('2018-08-08'));
@@ -12,7 +13,7 @@ import {render} from 'react-dom';
 
 render(<h1>jsx</h1>,window.rootaa);
 
-
+console.log(calc.sum(1,2));
 
 // import "@babel/polyfill";
 // var hdasd={
