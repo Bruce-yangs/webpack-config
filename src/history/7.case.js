@@ -3,10 +3,15 @@ class AsyncSeriesHook { // 钩子同步方法
         this.tasks = [];
     }
     tapAsync(name, task) {
+        console.log('argsargsargsargs？？？？》》》》');
+
+        console.log(name, task);
+
         this.tasks.push(task);
     }
     callAsync(...args) {
         let finalCallBack = args.pop();
+
         let index = 0;
         let next = () => {
             if (this.tasks.length === index) return finalCallBack();
